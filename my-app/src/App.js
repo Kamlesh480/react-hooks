@@ -1,19 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function App() {
-  const [state, setState] = useState({ count: 4, theme: "blue" });
-  const count = state.count;
-  const theme = state.theme;
+function useStatueApp() {
+  const [count, setCount] = useState(4);
+  const [theme, setTheme] = useState("Blue");
 
   function decCount() {
-    setState((prevState) => {
-      return { ...prevState, count: prevState.count - 1 };
-    });
+    setCount((prevCount) => prevCount - 1);
   }
   function incCount() {
-    setState((prevState) => {
-      return { ...prevState, count: prevState.count + 1 };
-    });
+    setCount((prevCount) => prevCount + 1);
   }
   return (
     <>
@@ -25,4 +20,29 @@ function App() {
   );
 }
 
-export default App;
+// export default useStatueApp;
+
+export default function App() {
+  const [resourceType, setResourceType] = useState("posts");
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    fetch(`https://jsonplaceholder.typicode.com/${resourceType}`)
+      .then((response) => response.json())
+      .then((json) => setItems(json));
+  }, [resourceType]);
+
+  return (
+    <>
+      <div>
+        <button onClick={() => setResourceType("posts")}>Posts</button>
+        <button onClick={() => setResourceType("users")}>Users</button>
+        <button onClick={() => setResourceType("comments")}>Comments</button>
+      </div>
+      <h1>{resourceType}</h1>
+      {items.map((item) => {
+        return <pre>{JSON.stringify(item)}</pre>;
+      })}
+    </>
+  );
+}
