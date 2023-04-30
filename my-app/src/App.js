@@ -23,20 +23,21 @@ function useStatueApp() {
 // export default useStatueApp;
 
 export default function App() {
-  const [windowWidth, setwindowWidth] = useState(window.innerWidth);
-
-  const handleResize = () => {
-    setwindowWidth(window.innerWidth);
-  };
+  const [resourceType, setResourceType] = useState("posts");
 
   useEffect(() => {
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    console.log("r changees");
+    return () => console.log("return from r changes");
+  }, [resourceType]);
 
   return (
     <>
-      <div>{windowWidth}</div>
+      <div>
+        <button onClick={() => setResourceType("posts")}>Posts</button>
+        <button onClick={() => setResourceType("users")}>Users</button>
+        <button onClick={() => setResourceType("comments")}>Comments</button>
+      </div>
+      <h1>{resourceType}</h1>
     </>
   );
 }
